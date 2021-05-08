@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <%- include ('includes/head.ejs') %>
+        <link rel="stylesheet" href="/css/home.css">
+        <script type="text/javascript" src="/javascript/home.js"></script>
+    </head>
+    <body>
+        <div class="container h-100">
+            <div class="row align-items-center h-100">
+                <div class="card mx-auto col-4 border-success mb-3" style="width: 24rem; border-radius: 10px;">
+                    <div class="card-body" id="register-card-body" style="display: none;">
+                        <h5 class="card-header border-success" style="text-align: center;">Register</h5>
+                        <br>
+                        <div class="card-text">
+                            <form method="POST" action="/add-user" name="registrationForm">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Username" name="userName" required pattern=".{6,}" title="username must contain atleast 6 characters">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="First Name" name="firstName" required pattern="[a-zA-Z]*" title="no numbers or special characters allowed">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Last Name" name="lastName" required pattern="[a-zA-Z]*" title="no numbers or special characters allowed">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Contact No." name="contact" required pattern="[0-9]{10}" title="contact number must contain exactly 10 numeric characters">
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" class="form-control" placeholder="Password"  name="password" required pattern=".{6,}" title="password must contain atleast 6 characters">
+                                </div>
+                                <div class="form-group">
+                                    <label for="role" style="margin: 5px; padding: 5px">
+                                        <strong>Role:
+                                        </strong>
+                                    </label>
+                                    <input type="radio" name="role" value="Farmer" checked="checked">
+                                    Farmer  
+                                    <input type="radio" name="role" value="Trader">
+                                    Trader  
+                                    <input type="radio" name="role" value="Transporter">
+                                    Transporter
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-success rounded-pill">Register</button>
+                                </div>
+                            </form>
+                            <div class="card-footer border-success" style="text-align: center;">Already a member?
+                                <a href="#" class="card-link" onclick="toggleCard()">Sign in</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body" id="login-card-body" style="display: block;">
+                        <h5 class="card-header border-success" style="text-align: center;">Login</h5>
+                        <br>
+                        <div class="card-text">
+                            <form method="POST" action="/login-user" name="registrationForm">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Username" name="userName" required>
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" class="form-control" name="password" placeholder="Password" required>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-success rounded-pill">Login</button>
+                                </div>
+                            </form>
+                            <div class="card-footer border-success" style="text-align: center;">Not a member?
+                                <a href="#" class="card-link" onclick="toggleCard()">Register</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </body>
+    </body>
+</html>
