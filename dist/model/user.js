@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
-let users = [];
+const database_1 = require("../utils/database");
 class User {
     constructor(userName, firstName, lastName, contact, role, password) {
         this.userName = userName;
@@ -12,11 +12,39 @@ class User {
         this.contact = contact;
     }
     save() {
-        users.push(this);
+        const db = database_1.getDb();
+        db.collection("users")
+            .insertOne(this)
+            .then((result) => console.log(result))
+            .catch((err) => console.log(err));
     }
     static fetchAll() {
-        return users;
+        const db = database_1.getDb();
+        return db
+            .collection("users")
+            .find()
+            .toArray()
+            .then((users) => {
+            return users;
+        })
+            .catch((err) => {
+            console.log(err);
+            throw err;
+        });
+    }
+    static getUser(userName) {
+        const db = database_1.getDb();
+        return db
+            .collection("users")
+            .find({ userName: userName })
+            .next()
+            .then((user) => {
+            return user;
+        })
+            .catch((err) => {
+            console.log(err);
+            throw err;
+        });
     }
 }
 exports.User = User;
-;

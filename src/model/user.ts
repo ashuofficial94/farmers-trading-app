@@ -1,4 +1,4 @@
-let users: Array<User> = [];
+import { getDb } from "../utils/database";
 
 class User {
     userName: string;
@@ -25,12 +25,42 @@ class User {
     }
 
     save() {
-        users.push(this);
+        const db = getDb();
+        db.collection("users")
+            .insertOne(this)
+            .then((result: any) => console.log(result))
+            .catch((err: Error) => console.log(err));
     }
 
     static fetchAll() {
-        return users;
+        const db = getDb();
+        return db
+            .collection("users")
+            .find()
+            .toArray()
+            .then((users: Array<User>) => {
+                return users;
+            })
+            .catch((err: Error) => {
+                console.log(err);
+                throw err;
+            });
     }
-};
 
-export {User};
+    static getUser(userName: string) {
+        const db = getDb();
+        return db
+            .collection("users")
+            .find({ userName: userName })
+            .next()
+            .then((user: User) => {
+                return user;
+            })
+            .catch((err: Error) => {
+                console.log(err);
+                throw err;
+            });
+    }
+}
+
+export { User };
