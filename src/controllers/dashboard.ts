@@ -100,6 +100,12 @@ exports.placeBid = (req: Request, res: Response, next: NextFunction) => {
     res.redirect("/dashboard");
 };
 
+exports.getBidderBid = async (req: Request, res: Response, next: NextFunction) => {
+    const bids = await TraderBid.getBidByBidder(req.session.user.userName);
+    console.log(bids);
+    res.send(bids);
+}
+
 exports.getProposalBid = async (
     req: Request,
     res: Response,
