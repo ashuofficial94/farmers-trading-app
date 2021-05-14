@@ -57,12 +57,13 @@
                     <div class="col-md-12">
                         <nav>
                             <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
-                                <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#open-tab" role="tab" aria-controls="nav-home" aria-selected="true">Open Proposals</a>
-                                <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#closed-tab" role="tab" aria-controls="nav-profile" aria-selected="false">Closed Proposals</a>
+                                <a class="nav-item nav-link active" id="nav-open-tab" data-toggle="tab" href="#open-tab" role="tab" aria-controls="nav-open" aria-selected="true">Open</a>
+                                <a class="nav-item nav-link" id="nav-pending-tab" data-toggle="tab" href="#pending-tab" role="tab" aria-controls="nav-pending" aria-selected="false">Pending</a>
+                                <a class="nav-item nav-link" id="nav-closed-tab" data-toggle="tab" href="#closed-tab" role="tab" aria-controls="nav-closed" aria-selected="false">Closed/Resolved</a>
                             </div>
                         </nav>
                         <div class="tab-content" id="nav-tabContent">
-                            <div class="tab-pane fade show active" role="tabpanel" aria-labelledby="nav-home-tab" id="open-tab">
+                            <div class="tab-pane fade show active" role="tabpanel" aria-labelledby="nav-open-tab" id="open-tab">
                                 <table class="table table-hover rounded" style="background: white">
                                     <thead>
                                         <tr>
@@ -76,7 +77,21 @@
                                     <tbody id="open-proposals"></tbody>
                                 </table>
                             </div>
-                            <div class="tab-pane fade" id="closed-tab" role="tabpanel" aria-labelledby="nav-profile-tab">
+                            <div class="tab-pane fade" id="pending-tab" role="tabpanel" aria-labelledby="nav-pending-tab">
+                                <table class="table table-hover rounded" style="background: white">
+                                    <thead>
+                                        <tr>
+                                            <th>Crop</th>
+                                            <th>Base Price</th>
+                                            <th>Status</th>
+                                            <th>Bids</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="pending-proposals"></tbody>
+                                </table>
+
+                            </div>
+                            <div class="tab-pane fade" id="closed-tab" role="tabpanel" aria-labelledby="nav-closed-tab">
                                 <table class="table table-hover rounded" style="background: white">
                                     <thead>
                                         <tr>
@@ -100,7 +115,7 @@
                             <h4 class="modal-title">Current Bids</h4>
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                         </div>
-                        <div class="modal-body"></div>
+                        <div class="modal-body" id="show-bids-modal-body"></div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger btn-small rounded-pill" data-dismiss="modal">Close</button>
                         </div>

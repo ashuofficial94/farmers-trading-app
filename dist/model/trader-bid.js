@@ -49,5 +49,24 @@ class TraderBid {
             throw err;
         });
     }
+    static acceptBid(bid, proposal) {
+        const db = database_1.getDb();
+        db.collection("trader-bids")
+            .updateMany({ proposalId: proposal._id }, { $set: { status: "rejected" } })
+            .then((result) => console.log(result))
+            .catch((err) => console.log(err));
+        db.collection("trader-bids")
+            .updateOne({ _id: ObjectID(bid._id) }, { $set: { status: "pending" } })
+            .then((result) => console.log(result))
+            .catch((err) => console.log(err));
+        const acceptedBid = {
+            bidderId: bid.bidderId,
+            bidAmount: bid.bidAmount,
+        };
+        db.collection("farmer-proposals")
+            .update({ _id: ObjectID(proposal._id) }, { $set: { acceptedBid: acceptedBid, status: "pending" } })
+            .then((result) => console.log(result))
+            .catch((err) => console.log(err));
+    }
 }
 exports.TraderBid = TraderBid;

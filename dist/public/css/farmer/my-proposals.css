@@ -2,14 +2,15 @@
     padding: 10%;
     margin-top: -8%;
 }
-.project-tab #tabs{
+.project-tab #tabs {
     background: #007b5e;
     color: #eee;
 }
-.project-tab #tabs h6.section-title{
+.project-tab #tabs h6.section-title {
     color: #eee;
 }
-.project-tab #tabs .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+.project-tab #tabs .nav-tabs .nav-item.show .nav-link,
+.nav-tabs .nav-link.active {
     color: #0062cc;
     background-color: transparent;
     border-color: transparent transparent #f3f3f3;
@@ -19,8 +20,8 @@
 }
 .project-tab .nav-link {
     border: 1px solid transparent;
-    border-top-left-radius: .25rem;
-    border-top-right-radius: .25rem;
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
     color: #0062cc;
     font-size: 16px;
     font-weight: 600;
@@ -28,11 +29,11 @@
 .project-tab .nav-link:hover {
     border: none;
 }
-.project-tab thead{
+.project-tab thead {
     background: #f3f3f3;
     color: #333;
 }
-.project-tab a{
+.project-tab a {
     text-decoration: none;
     color: #333;
     font-weight: 600;
@@ -42,4 +43,8 @@ form > * {
     margin: 5px;
     padding: 5px;
     text-align: left;
+}
+.modal-body {
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
 }

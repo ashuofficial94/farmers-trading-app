@@ -137,6 +137,7 @@ state_input.addEventListener("change", (e) => {
 
 const openProposalsContent = document.querySelector("#open-proposals");
 const closedProposalsContent = document.querySelector("#closed-proposals");
+const pendingProposalsContent = document.querySelector("#pending-proposals");
 
 async function getProposals() {
     const proposals = fetch("/get-proposals")
@@ -157,6 +158,10 @@ fillStates();
 fillCities();
 
 getProposals().then((proposals) => {
+    openProposalsContent.innerHTML = "";
+    closedProposalsContent.innerHTML = "";
+    pendingProposalsContent.innerHTML = "";
+
     for (let proposal of proposals) {
         const row = document.createElement("tr");
         const col1 = document.createElement("td");
@@ -174,6 +179,11 @@ getProposals().then((proposals) => {
         show_bid_button.setAttribute("data-toggle", "modal");
         show_bid_button.setAttribute("data-target", "#show-bids");
         show_bid_button.innerText = "Show Bids";
+        show_bid_button.setAttribute("id", "show-bid-" + proposal._id);
+
+        show_bid_button.addEventListener("click", async (e) => {
+            getBids(proposal);
+        });
 
         col1.innerText = proposal.crop;
         col2.innerText = proposal.basePrice;
@@ -186,10 +196,23 @@ getProposals().then((proposals) => {
         row.appendChild(col4);
 
         if (proposal.status === "closed" || proposal.status === "resolved") {
-            if (proposal.status === "resolved") row.classList.add("table-success");
-            if (proposal.status === "closed") row.classList.add("table-danger");
+            if (proposal.status === "resolved") {
+                col4.innerHTML = "";
+                accepted_bid = document.createElement("button");
+                accepted_bid.classList.add(
+                    "btn",
+                    "btn-sm",
+                    "btn-success",
+                    "rounded-pill"
+                );
+                accepted_bid.innerHTML = "Accepted Bid";
+                col4.appendChild(accepted_bid);
+                row.classList.add("table-success");
+            } else if (proposal.status === "closed") {
+                row.classList.add("table-danger");
+            }
             closedProposalsContent.appendChild(row);
-        } else {
+        } else if (proposal.status == "open") {
             const col5 = document.createElement("td");
             const delete_button = document.createElement("button");
             delete_button.classList.add(
@@ -220,6 +243,135 @@ getProposals().then((proposals) => {
             col5.appendChild(delete_button);
             row.appendChild(col5);
             openProposalsContent.appendChild(row);
+        } else if (proposal.status === "pending") {
+            row.classList.add("table-success");
+            col4.innerHTML = "";
+            accepted_bid = document.createElement("button");
+            accepted_bid.classList.add(
+                "btn",
+                "btn-sm",
+                "btn-success",
+                "rounded-pill"
+            );
+            accepted_bid.innerHTML = "Accepted Bid";
+            col4.appendChild(accepted_bid);
+            row.classList.add("table-warning");
+            pendingProposalsContent.appendChild(row);
         }
     }
 });
+
+async function getBids(proposal) {
+    bidsContent = document.querySelector("#show-bids-modal-body");
+    bidsContent.innerHTML = "";
+
+    const bids = await fetch("/get-proposal-bid", {
+        method: "POST",
+        header: {
+            "Content-Type": "application/text",
+        },
+        body: proposal._id,
+    })
+        .then((response) => {
+            return response.json();
+        })
+        .then((result) => {
+            return result;
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+
+    if (bids.length == 0) {
+        bidsContent.innerText = "No bids as of now !";
+        return;
+    }
+
+    bids.sort((a, b) => {
+        return b.bidAmount - a.bidAmount;
+    });
+
+    const table = document.createElement("table");
+    const thead = document.createElement("thead");
+    const rowh = document.createElement("tr");
+
+    const col1h = document.createElement("th");
+    const col2h = document.createElement("th");
+    col1h.innerText = "Bidder ID";
+    col2h.innerText = "Bidding Amount(₹)";
+
+    rowh.appendChild(col1h);
+    rowh.appendChild(col2h);
+
+    if (proposal.status !== "closed") {
+        const col3h = document.createElement("th");
+        col3h.innerText = "Operation";
+        rowh.appendChild(col3h);
+    }
+
+    thead.appendChild(rowh);
+    table.appendChild(thead);
+
+    const tbody = document.createElement("tbody");
+
+    for (let bid of bids) {
+        const row = document.createElement("tr");
+        const col1 = document.createElement("td");
+        const col2 = document.createElement("td");
+        const col3 = document.createElement("td");
+
+        col1.innerText = bid.bidderId;
+        col2.innerText = bid.bidAmount;
+
+        const accept_button = document.createElement("button");
+        accept_button.classList.add(
+            "btn",
+            "btn-success",
+            "btn-sm",
+            "rounded-pill"
+        );
+        accept_button.innerText = "Accept Bid";
+
+        col3.appendChild(accept_button);
+        accept_button.addEventListener("click", async (e) => {
+            acceptBid(bid, proposal);
+        });
+
+        row.appendChild(col1);
+        row.appendChild(col2);
+        if (proposal.status !== "closed") row.appendChild(col3);
+        tbody.appendChild(row);
+    }
+
+    table.appendChild(tbody);
+    table.classList.add("table", "table-striped");
+    bidsContent.innerHTML = "";
+    bidsContent.appendChild(table);
+}
+
+async function acceptBid(bid, proposal) {
+    if (
+        !confirm(
+            "Are you sure you want to accept this bid of ₹" + bid.bidAmount
+        )
+    )
+        return;
+    const data = {
+        bid: bid,
+        proposal: proposal,
+    };
+
+    fetch("/accept-bid", {
+        method: "POST",
+        header: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    })
+        .then((response) => {
+            return response.json();
+        })
+        .then(() => {
+            location.reload();
+        });
+}

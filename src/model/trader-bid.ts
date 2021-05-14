@@ -1,4 +1,6 @@
 import { getDb } from "../utils/database";
+import { FarmerProposal } from "./farmer-proposal";
+
 const ObjectID = require("mongodb").ObjectID;
 
 class TraderBid {
@@ -41,6 +43,7 @@ class TraderBid {
                 throw err;
             });
     }
+
     static getBidByBidder(bidderId: string) {
         const db = getDb();
         return db
@@ -53,6 +56,36 @@ class TraderBid {
             .catch((err: Error) => {
                 throw err;
             });
+    }
+
+    static acceptBid(bid: any, proposal: any) {
+        const db = getDb();
+
+        db.collection("trader-bids")
+            .updateMany(
+                { proposalId: proposal._id },
+                { $set: { status: "rejected" } }
+            )
+            .then((result: any) => console.log(result))
+            .catch((err: Error) => console.log(err));
+
+        db.collection("trader-bids")
+            .updateOne({ _id: ObjectID(bid._id) }, { $set: { status: "pending" } })
+            .then((result: any) => console.log(result))
+            .catch((err: Error) => console.log(err));
+
+        const acceptedBid = {
+            bidderId: bid.bidderId,
+            bidAmount: bid.bidAmount,
+        };
+
+        db.collection("farmer-proposals")
+            .update(
+                { _id: ObjectID(proposal._id) },
+                { $set: { acceptedBid: acceptedBid, status: "pending" } }
+            )
+            .then((result: any) => console.log(result))
+            .catch((err: Error) => console.log(err));
     }
 }
 

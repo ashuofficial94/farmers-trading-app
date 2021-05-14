@@ -82,3 +82,8 @@ exports.getProposalBid = (req, res, next) => __awaiter(void 0, void 0, void 0, f
     const bids = yield trader_bid_1.TraderBid.getBidByProposal(proposalId);
     res.send(bids);
 });
+exports.acceptBid = (req, res, next) => {
+    const data = JSON.parse(req.body);
+    trader_bid_1.TraderBid.acceptBid(data.bid, data.proposal);
+    res.send({});
+};

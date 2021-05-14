@@ -13,3 +13,4 @@ router.post("/get-proposal-bid", dashboardController.getProposalBid);
 router.post("/add-farmer-proposal", dashboardController.addFarmerProposal);
 router.post("/close-proposal", dashboardController.closeProposal);
 router.post("/place-bid", dashboardController.placeBid);
+router.post("/accept-bid", dashboardController.acceptBid);

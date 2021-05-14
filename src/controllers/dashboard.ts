@@ -101,3 +101,9 @@ exports.getProposalBid = async (req: Request, res: Response, next: NextFunction)
     const bids = await TraderBid.getBidByProposal(proposalId);
     res.send(bids);
 }
+
+exports.acceptBid = (req: Request, res: Response, next: NextFunction) => {
+    const data = JSON.parse(req.body);
+    TraderBid.acceptBid(data.bid, data.proposal);
+    res.send({});
+}
