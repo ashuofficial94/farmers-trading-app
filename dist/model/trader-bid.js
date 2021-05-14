@@ -32,6 +32,7 @@ class TraderBid {
             return bids;
         })
             .catch((err) => {
+            console.log(err);
             throw err;
         });
     }

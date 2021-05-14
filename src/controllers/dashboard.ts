@@ -95,3 +95,9 @@ exports.placeBid = (req: Request, res: Response, next: NextFunction) => {
     bid.save()
     res.redirect("/dashboard");
 };
+
+exports.getProposalBid = async (req: Request, res: Response, next: NextFunction) => {
+    const proposalId = req.body;
+    const bids = await TraderBid.getBidByProposal(proposalId);
+    res.send(bids);
+}

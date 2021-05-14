@@ -77,3 +77,8 @@ exports.placeBid = (req, res, next) => {
     bid.save();
     res.redirect("/dashboard");
 };
+exports.getProposalBid = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const proposalId = req.body;
+    const bids = yield trader_bid_1.TraderBid.getBidByProposal(proposalId);
+    res.send(bids);
+});

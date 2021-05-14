@@ -2,7 +2,7 @@ const infoPanel = document.querySelector("#info-panel");
 const infoHeader = document.querySelector("#info-header");
 const infoContent = document.querySelector("#info-content");
 
-function getBids(proposal) {
+async function getBids(proposal) {
     infoContent.innerHTML = "";
     infoContent.classList.add("w3-animate-right");
     setTimeout(function () {
@@ -11,11 +11,35 @@ function getBids(proposal) {
 
     infoHeader.innerHTML = "Current Bids";
     proposal = JSON.parse(proposal);
+    const data = {
+        proposalId: proposal._id,
+    };
 
-    if (proposal.bids.length == 0) {
-        infoContent.innerHTML = "No Bids as of now!";
+    const bids = await fetch("/get-proposal-bid", {
+        method: "POST",
+        header: {
+            "Content-Type": "application/text",
+        },
+        body: proposal._id,
+    })
+        .then((response) => {
+            return response.json();
+        })
+        .then((result) => {
+            return result;
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+
+    if (bids.length == 0) {
+        infoContent.innerText = "No bids as of now !";
         return;
     }
+
+    bids.sort((a, b) => {
+        return b.bidAmount - a.bidAmount;
+    });
 
     const table = document.createElement("table");
     const thead = document.createElement("thead");
@@ -23,8 +47,6 @@ function getBids(proposal) {
 
     const col1h = document.createElement("th");
     const col2h = document.createElement("th");
-    col1h.setAttribute("scope", "col");
-    col2h.setAttribute("scope", "col");
 
     col1h.innerText = "Bidder ID";
     col2h.innerText = "Bidding Amount(₹)";
@@ -34,8 +56,23 @@ function getBids(proposal) {
     thead.appendChild(rowh);
     table.appendChild(thead);
 
-    table.classList.add("table", "table-striped");
+    tbody = document.createElement("tbody");
 
+    for (let bid of bids) {
+        const row = document.createElement("tr");
+        const col1 = document.createElement("td");
+        const col2 = document.createElement("td");
+
+        col1.innerText = bid.bidderId;
+        col2.innerText = bid.bidAmount;
+
+        row.appendChild(col1);
+        row.appendChild(col2);
+        tbody.appendChild(row);
+    }
+
+    table.appendChild(tbody);
+    table.classList.add("table", "table-striped");
     infoContent.appendChild(table);
 }
 
@@ -87,24 +124,28 @@ function getDetails(proposal) {
 function decreaseBid(proposal) {
     proposal = JSON.parse(proposal);
     const basePrice = parseInt(proposal.basePrice);
-    const bidAmountElement = document.getElementById("bid-amount-"+proposal._id);
+    const bidAmountElement = document.getElementById(
+        "bid-amount-" + proposal._id
+    );
 
     bidAmount = parseInt(bidAmountElement.value.substring(1));
 
     if (bidAmount == basePrice) {
-        document.getElementById("decrease-bid-"+proposal._id).disabled = true;
+        document.getElementById("decrease-bid-" + proposal._id).disabled = true;
         return;
     }
 
     bidAmount -= 100;
-    document.getElementById("decrease-bid-"+proposal._id).disabled = false;
+    document.getElementById("decrease-bid-" + proposal._id).disabled = false;
     bidAmountElement.value = "₹" + bidAmount;
 }
 
 function increaseBid(proposal) {
     proposal = JSON.parse(proposal);
-    document.getElementById("decrease-bid-"+proposal._id).disabled = false;
-    const bidAmountElement = document.getElementById("bid-amount-"+proposal._id);
+    document.getElementById("decrease-bid-" + proposal._id).disabled = false;
+    const bidAmountElement = document.getElementById(
+        "bid-amount-" + proposal._id
+    );
 
     bidAmount = parseInt(bidAmountElement.value.substring(1));
     bidAmount += 100;
