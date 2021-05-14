@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { FarmerProposal } from "../model/farmer-proposal";
+import { TraderBid } from "../model/trader-bid";
 
 exports.getDashboard = async (
     req: Request,
@@ -83,4 +84,14 @@ exports.addFarmerProposal = (
 exports.closeProposal = async (req: Request, res: Response, next: NextFunction) => {
     const response = await FarmerProposal.closeProposal(req.body._id);
     return response;
+};
+
+exports.placeBid = (req: Request, res: Response, next: NextFunction) => {
+    const proposalId = req.body.proposalId;
+    const bidderId = req.session.user.userName;
+    const bidAmount = parseInt(req.body.bidAmount.substring(1));
+    
+    const bid = new TraderBid(proposalId, bidderId, bidAmount);
+    bid.save()
+    res.redirect("/dashboard");
 };

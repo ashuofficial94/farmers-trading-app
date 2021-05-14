@@ -13,6 +13,16 @@
                 <link rel="stylesheet" href="css/farmer/my-proposals.css">
             <% } %>
         <% } %>
+        <% if(user.role === "Trader") { %>
+            <% if(tabTitle == "feed") { %>
+                <script src="javascript/trader/feed.js" defer></script>
+                <link rel="stylesheet" href="css/farmer/feed.css">
+            <% } %>
+            <% if(tabTitle == "trader-bids") { %>
+                <script src="javascript/farmer/trader-bids.js" defer></script>
+                <link rel="stylesheet" href="css/farmer/trader-bids.css">
+            <% } %>
+        <% } %>
         <link rel="stylesheet" href="css/dashboard.css">
     </head>
     <body>

@@ -19,6 +19,20 @@
                         <br/><br/>
                         <button class="btn btn-info btn-sm rounded-pill" id="get-details" onclick="getDetails('<%= JSON.stringify(proposal)%>')">Details</button>
                         <button class="btn btn-primary btn-sm rounded-pill" id="get-bids" onclick="getBids('<%= JSON.stringify(proposal) %>')">Current Bids</button>
+                        <button class="btn btn-danger btn-sm rounded-pill" data-toggle="collapse" data-target="#bid-<%= proposal._id %>" aria-expanded="false" aria-controls="bid-<%= proposal._id %>">Bid</button>
+                    </div>
+                </div>
+                <div class="collapse" id="bid-<%= proposal._id %>">
+                    <div class="card card-body">
+                        <form action="/place-bid" method="post">
+                            <div class="form-row form-group form-inline">
+                                <button type="button" class="col-sm-2 form-control btn btn-warning btn-sm rounded-pill" onclick="decreaseBid('<%= JSON.stringify(proposal)%>')" id="decrease-bid-<%= proposal._id%>" disabled>-₹100</button>
+                                <input type="hidden" value="<%= proposal._id%>" name="proposalId">
+                                <input type="text" class="col-sm-3 form-control rounded-pill input-sm"  value = "₹<%= proposal.basePrice %>" name="bidAmount" id="bid-amount-<%= proposal._id%>" readonly> 
+                                <button type="button" class="col-sm-2 form-control btn btn-info btn-sm rounded-pill" onclick="increaseBid('<%= JSON.stringify(proposal) %>')">+₹100</button>
+                                <button type="submit" class="col-sm-2 ml-auto form-control btn btn-success btn-sm rounded-pill">Place Bid</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             <% } %>

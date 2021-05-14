@@ -9,7 +9,7 @@ class FarmerProposal {
     state: string;
     city: string;
     status: string;
-    bids: Array<Object>;
+    acceptedBid: object;
 
     constructor(
         userId: string,
@@ -25,7 +25,7 @@ class FarmerProposal {
         this.city = city;
         this.startDate = new Date();
         this.status = "open";
-        this.bids = [];
+        this.acceptedBid = {};
     }
 
     save() {
@@ -69,46 +69,7 @@ class FarmerProposal {
                 throw err;
             });
     }
-
-    static addBid(userId: string, bidderId: string, bidAmount: number) {
-        const db = getDb();
-        db.collection("farmer-proposals")
-            .updateOne(
-                { userId: userId },
-                {
-                    $push: {
-                        bids: {
-                            bidderId: bidderId,
-                            bidAmount: bidAmount,
-                        },
-                        $sort: { bidAmount: -1 },
-                    },
-                }
-            )
-            .then((result: object) => {
-                console.log(result);
-            })
-            .catch((err: Error) => {
-                console.log(err);
-                throw err;
-            });
-    }
-
-    static getBids(bidderId: string) {
-        const db = getDb();
-        return db
-            .collection("farmer-proposals")
-            .find({ bidderId: bidderId })
-            .toArray()
-            .then((proposals: Array<FarmerProposal>) => {
-                return proposals;
-            })
-            .catch((err: Error) => {
-                console.log(err);
-                throw err;
-            });
-    }
-
+   
     static closeProposal(proposalId: string) {
         const db = getDb();
         return db

@@ -1,1 +1,7 @@
 <%- include('navigation.ejs') %>
+<% if(tabTitle === "feed") { %>
+    <%- include('feed.ejs') %>
+<% } %>
+<% if(tabTitle === "trader-bids") { %>
+    <%- include('my-bids.ejs') %>
+<% } %>

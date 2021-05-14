@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const farmer_proposal_1 = require("../model/farmer-proposal");
+const trader_bid_1 = require("../model/trader-bid");
 exports.getDashboard = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     if (!req.session.user) {
         console.log("No user logged in");
@@ -68,3 +69,11 @@ exports.closeProposal = (req, res, next) => __awaiter(void 0, void 0, void 0, fu
     const response = yield farmer_proposal_1.FarmerProposal.closeProposal(req.body._id);
     return response;
 });
+exports.placeBid = (req, res, next) => {
+    const proposalId = req.body.proposalId;
+    const bidderId = req.session.user.userName;
+    const bidAmount = parseInt(req.body.bidAmount.substring(1));
+    const bid = new trader_bid_1.TraderBid(proposalId, bidderId, bidAmount);
+    bid.save();
+    res.redirect("/dashboard");
+};

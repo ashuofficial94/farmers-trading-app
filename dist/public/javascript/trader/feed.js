@@ -12,31 +12,31 @@ function getBids(proposal) {
     infoHeader.innerHTML = "Current Bids";
     proposal = JSON.parse(proposal);
 
-    if(proposal.bids.length == 0) {
+    if (proposal.bids.length == 0) {
         infoContent.innerHTML = "No Bids as of now!";
         return;
     }
 
-    // const table = document.createElement("table");
-    // const thead = document.createElement("thead");
-    // const rowh = document.createElement("tr");
+    const table = document.createElement("table");
+    const thead = document.createElement("thead");
+    const rowh = document.createElement("tr");
 
-    // const col1h = document.createElement("th");
-    // const col2h = document.createElement("th");
-    // col1h.setAttribute("scope", "col");
-    // col2h.setAttribute("scope", "col");
+    const col1h = document.createElement("th");
+    const col2h = document.createElement("th");
+    col1h.setAttribute("scope", "col");
+    col2h.setAttribute("scope", "col");
 
-    // col1h.innerText = "Bidder ID"
-    // col2h.innerText = "Bidding Amount(₹)"
+    col1h.innerText = "Bidder ID";
+    col2h.innerText = "Bidding Amount(₹)";
 
-    // rowh.appendChild(col1h);
-    // rowh.appendChild(col2h);
-    // thead.appendChild(rowh);
-    // table.appendChild(thead);
+    rowh.appendChild(col1h);
+    rowh.appendChild(col2h);
+    thead.appendChild(rowh);
+    table.appendChild(thead);
 
-    // table.classList.add("table", "table-striped");
+    table.classList.add("table", "table-striped");
 
-    // infoContent.appendChild(table);
+    infoContent.appendChild(table);
 }
 
 function getDetails(proposal) {
@@ -82,4 +82,31 @@ function getDetails(proposal) {
     }
 
     infoContent.appendChild(table);
+}
+
+function decreaseBid(proposal) {
+    proposal = JSON.parse(proposal);
+    const basePrice = parseInt(proposal.basePrice);
+    const bidAmountElement = document.getElementById("bid-amount-"+proposal._id);
+
+    bidAmount = parseInt(bidAmountElement.value.substring(1));
+
+    if (bidAmount == basePrice) {
+        document.getElementById("decrease-bid-"+proposal._id).disabled = true;
+        return;
+    }
+
+    bidAmount -= 100;
+    document.getElementById("decrease-bid-"+proposal._id).disabled = false;
+    bidAmountElement.value = "₹" + bidAmount;
+}
+
+function increaseBid(proposal) {
+    proposal = JSON.parse(proposal);
+    document.getElementById("decrease-bid-"+proposal._id).disabled = false;
+    const bidAmountElement = document.getElementById("bid-amount-"+proposal._id);
+
+    bidAmount = parseInt(bidAmountElement.value.substring(1));
+    bidAmount += 100;
+    bidAmountElement.value = "₹" + bidAmount;
 }
