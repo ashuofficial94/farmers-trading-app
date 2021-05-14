@@ -1,0 +1,31 @@
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6" id="feed-panel">
+            <% proposals = proposals.sort((a, b) => b.startDate - a.startDate);
+                for(let proposal of proposals) { 
+                    if(proposal.status === "open") { %>
+                <div class="card rounded">
+                    <div class="card-body">
+                        <h5 class="card-title"><%= proposal.crop %>
+                            [₹<%= proposal.basePrice%>]</h5>
+                        <small>
+                            Created On:
+                            <%= proposal.startDate %></small><br/>
+                        <small>
+                            <strong>Location:
+                            </strong>
+                            <%= proposal.city+', '+proposal.state %>
+                        </small>
+                        <br/><br/>
+                        <button class="btn btn-info btn-sm rounded-pill" id="get-details" onclick="getDetails('<%= JSON.stringify(proposal)%>')">Details</button>
+                        <button class="btn btn-primary btn-sm rounded-pill" id="get-bids" onclick="getBids('<%= JSON.stringify(proposal) %>')">Current Bids</button>
+                    </div>
+                </div>
+            <% } %>
+        <% } %>
+    </div>
+    <div class="col-sm-6 rounded" id="info-panel">
+        <h4 class="text-center" id="info-header">Information Panel</h4>
+        <div id="info-content"></div>
+    </div>
+</div></div>

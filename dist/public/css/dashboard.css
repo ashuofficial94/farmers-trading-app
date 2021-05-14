@@ -1,0 +1,17 @@
+.main-nav {
+    margin: 5px;
+}
+.main-nav > * {
+    margin: 5px;
+}
+body {
+    background: url("../images/background-blur.jpg") no-repeat center fixed;
+}
+.body-content {
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid white;
+    border-radius: 5px;
+    position: absolute;
+    left: 8%;
+    height: calc(100vh - 5px);
+}

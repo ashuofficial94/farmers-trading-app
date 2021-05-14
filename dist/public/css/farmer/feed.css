@@ -1,0 +1,13 @@
+#info-panel {
+    background: white;
+    height: calc(100vh - 90px);
+    max-height: calc(100vh - 90px);
+    overflow: auto;
+}
+
+#feed-panel {
+    position: relative;
+    height: calc(100vh - 90px);
+    max-height: calc(100vh - 90px);
+    overflow: auto;
+}

@@ -5,7 +5,7 @@ import bodyParser = require("body-parser");
 import session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
 
-import { get404 } from "./controllers/404";
+import { router as route404 } from "./routes/404";
 import { router as homeRoute } from "./routes/home";
 import { router as dashboardRoute } from "./routes/dashboard";
 import { mongoConnect } from "./utils/database";
@@ -35,7 +35,7 @@ app.use(
 
 app.use(homeRoute);
 app.use(dashboardRoute);
-app.use(get404);
+app.use(route404);
 
 mongoConnect(() => {
     app.listen(3000);

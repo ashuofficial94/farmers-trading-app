@@ -13,7 +13,7 @@ const user_1 = require("../model/user");
 exports.getHomePage = (req, res, next) => {
     if (!req.session.user) {
         res.render("home", {
-            pageTitle: "Home",
+            pageTitle: "Home"
         });
     }
     else {

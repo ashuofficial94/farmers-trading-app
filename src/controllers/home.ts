@@ -7,10 +7,16 @@ declare module "express-session" {
     }
 }
 
+declare module "express" {
+    export interface Request {
+        users: any;
+    }
+}
+
 exports.getHomePage = (req: Request, res: Response, next: NextFunction) => {
     if (!req.session.user) {
         res.render("home", {
-            pageTitle: "Home",
+            pageTitle: "Home"
         });
     } else {
         console.log(req.session.user.userName + " already logged in");

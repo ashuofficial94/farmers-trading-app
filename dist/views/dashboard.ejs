@@ -2,9 +2,36 @@
 <html lang="en">
     <head>
         <%- include ('includes/head.ejs') %>
+        <script src="javascript/dashboard.js" defer></script>
+        <% if(user.role === "Farmer") { %>
+            <% if(tabTitle == "feed") { %>
+                <script src="javascript/farmer/feed.js" defer></script>
+                <link rel="stylesheet" href="css/farmer/feed.css">
+            <% } %>
+            <% if(tabTitle == "farmer-proposals") { %>
+                <script src="javascript/farmer/my-proposals.js" defer></script>
+                <link rel="stylesheet" href="css/farmer/my-proposals.css">
+            <% } %>
+        <% } %>
+        <link rel="stylesheet" href="css/dashboard.css">
     </head>
     <body>
-        <%= JSON.stringify(user) %> 
-        <a href="/logout"><button>Logout</button></a>
+        <div class="bg-image"></div>
+        <div class="container body-content">
+            <div>
+                <% if(user.role === "Farmer") { %>
+                    <%- include('modules/farmer/farmer.ejs') %>
+                <% } %>
+                <% if(user.role === "Trader") { %>
+                    <%- include('modules/trader/trader.ejs') %>
+                <% } %>
+                <% if(user.role === "Transporter") { %>
+                    <%- include('modules/transporter/transporter.ejs') %>
+                <% } %>
+                <% if(user.role === "Admin") { %>
+                    <%- include('modules/admin/admin.ejs') %>
+                <% } %>
+            </div>
+        </div>
     </body>
 </html>

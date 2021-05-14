@@ -1,0 +1,7 @@
+<%- include('navigation.ejs') %>
+<% if(tabTitle === "feed") { %>
+    <%- include('feed.ejs') %>
+<% } %>
+<% if(tabTitle === "farmer-proposals") { %>
+    <%- include('my-proposals.ejs') %>
+<% } %>

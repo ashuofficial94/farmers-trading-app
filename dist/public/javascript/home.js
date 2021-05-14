@@ -1,4 +1,3 @@
-
 function toggleCard() {
     const register_card_body = document.querySelector("#register-card-body");
     const login_card_body = document.querySelector("#login-card-body");

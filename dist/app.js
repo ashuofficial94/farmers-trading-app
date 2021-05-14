@@ -8,7 +8,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
-const _404_1 = require("./controllers/404");
+const _404_1 = require("./routes/404");
 const home_1 = require("./routes/home");
 const dashboard_1 = require("./routes/dashboard");
 const database_1 = require("./utils/database");
@@ -31,7 +31,7 @@ app.use(session({
 }));
 app.use(home_1.router);
 app.use(dashboard_1.router);
-app.use(_404_1.get404);
+app.use(_404_1.router);
 database_1.mongoConnect(() => {
     app.listen(3000);
 });

@@ -7,3 +7,6 @@ const router = express.Router();
 exports.router = router;
 router.get("/dashboard", dashboardController.getDashboard);
 router.get("/logout", dashboardController.logout);
+router.get("/get-proposals", dashboardController.getProposals);
+router.get("/my-proposals", dashboardController.getFarmerProposalsPage);
+router.post("/add-farmer-proposal", dashboardController.addFarmerProposal);

@@ -3,7 +3,7 @@
     <head>
         <%- include ('includes/head.ejs') %>
         <link rel="stylesheet" href="/css/home.css">
-        <script type="text/javascript" src="/javascript/home.js"></script>
+        <script type="text/javascript" src="/javascript/home.js" defer></script>
     </head>
     <body>
         <div class="container h-100">
@@ -27,7 +27,7 @@
                                     <input type="text" class="form-control" placeholder="Contact No." name="contact" required pattern="[0-9]{10}" title="contact number must contain exactly 10 numeric characters">
                                 </div>
                                 <div class="form-group">
-                                    <input type="password" class="form-control" placeholder="Password"  name="password" required pattern=".{6,}" title="password must contain atleast 6 characters">
+                                    <input type="password" class="form-control" placeholder="Password" name="password" required pattern=".{6,}" title="password must contain atleast 6 characters">
                                 </div>
                                 <div class="form-group">
                                     <label for="role" style="margin: 5px; padding: 5px">
@@ -35,9 +35,9 @@
                                         </strong>
                                     </label>
                                     <input type="radio" name="role" value="Farmer" checked="checked">
-                                    Farmer  
+                                    Farmer
                                     <input type="radio" name="role" value="Trader">
-                                    Trader  
+                                    Trader
                                     <input type="radio" name="role" value="Transporter">
                                     Transporter
                                 </div>
