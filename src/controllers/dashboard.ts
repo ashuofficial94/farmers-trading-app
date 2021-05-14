@@ -1,7 +1,11 @@
 import { Request, Response, NextFunction } from "express";
 import { FarmerProposal } from "../model/farmer-proposal";
 
-exports.getDashboard = async (req: Request, res: Response, next: NextFunction) => {
+exports.getDashboard = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
     if (!req.session.user) {
         console.log("No user logged in");
         res.redirect("/");
@@ -34,7 +38,9 @@ exports.getProposals = async (
     res: Response,
     next: NextFunction
 ) => {
-    const proposals = await FarmerProposal.fetchAll()
+    const proposals = await FarmerProposal.getUserProposals(
+        req.session.user.userName
+    )
         .then((proposals: Array<FarmerProposal>) => {
             return proposals;
         })
@@ -72,4 +78,9 @@ exports.addFarmerProposal = (
     proposal.save();
 
     res.redirect("/my-proposals");
+};
+
+exports.closeProposal = async (req: Request, res: Response, next: NextFunction) => {
+    const response = await FarmerProposal.closeProposal(req.body._id);
+    return response;
 };

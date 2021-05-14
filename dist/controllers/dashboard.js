@@ -38,7 +38,7 @@ exports.logout = (req, res, next) => {
     res.redirect("/");
 };
 exports.getProposals = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const proposals = yield farmer_proposal_1.FarmerProposal.fetchAll()
+    const proposals = yield farmer_proposal_1.FarmerProposal.getUserProposals(req.session.user.userName)
         .then((proposals) => {
         return proposals;
     })
@@ -64,3 +64,7 @@ exports.addFarmerProposal = (req, res, next) => {
     proposal.save();
     res.redirect("/my-proposals");
 };
+exports.closeProposal = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const response = yield farmer_proposal_1.FarmerProposal.closeProposal(req.body._id);
+    return response;
+});

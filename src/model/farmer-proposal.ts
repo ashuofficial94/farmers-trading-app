@@ -1,4 +1,5 @@
 import { getDb } from "../utils/database";
+const ObjectID = require('mongodb').ObjectID
 
 class FarmerProposal {
     userId: string;
@@ -15,7 +16,7 @@ class FarmerProposal {
         crop: string,
         basePrice: number,
         state: string,
-        city: string 
+        city: string
     ) {
         this.userId = userId;
         this.crop = crop;
@@ -101,6 +102,23 @@ class FarmerProposal {
             .toArray()
             .then((proposals: Array<FarmerProposal>) => {
                 return proposals;
+            })
+            .catch((err: Error) => {
+                console.log(err);
+                throw err;
+            });
+    }
+
+    static closeProposal(proposalId: string) {
+        const db = getDb();
+        return db
+            .collection("farmer-proposals")
+            .updateOne(
+                { "_id": ObjectID(proposalId) },
+                { $set: { status: "closed" } }
+            )
+            .then((result: any) => {
+                return result;
             })
             .catch((err: Error) => {
                 console.log(err);

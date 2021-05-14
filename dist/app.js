@@ -21,6 +21,7 @@ const store = new MongoDBStore({
 app.set("view engine", "ejs");
 app.set("views", "dist/views");
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(express.static(path_1.default.join(__dirname, "public")));
 app.use(express.static(path_1.default.join(__dirname, "..", "node_modules")));
 app.use(session({

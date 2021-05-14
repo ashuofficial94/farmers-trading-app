@@ -129,11 +129,97 @@ function fillCities(index = 0) {
     }
 }
 
-fillStates();
-fillCities();
-
 state_input.addEventListener("change", (e) => {
     let index = state_arr.indexOf(state_input.value);
     city_input.innerHTML = "";
     fillCities(index);
+});
+
+const openProposalsContent = document.querySelector("#open-proposals");
+const closedProposalsContent = document.querySelector("#closed-proposals");
+
+async function getProposals() {
+    const proposals = fetch("/get-proposals")
+        .then((response) => {
+            return response.json();
+        })
+        .then((result) => {
+            return result;
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+
+    return proposals;
+}
+
+fillStates();
+fillCities();
+
+getProposals().then((proposals) => {
+    for (let proposal of proposals) {
+        const row = document.createElement("tr");
+        const col1 = document.createElement("td");
+        const col2 = document.createElement("td");
+        const col3 = document.createElement("td");
+        const col4 = document.createElement("td");
+
+        const show_bid_button = document.createElement("button");
+        show_bid_button.classList.add(
+            "btn",
+            "btn-sm",
+            "btn-info",
+            "rounded-pill"
+        );
+        show_bid_button.setAttribute("data-toggle", "modal");
+        show_bid_button.setAttribute("data-target", "#show-bids");
+        show_bid_button.innerText = "Show Bids";
+
+        col1.innerText = proposal.crop;
+        col2.innerText = proposal.basePrice;
+        col3.innerText = proposal.status;
+        col4.appendChild(show_bid_button);
+
+        row.appendChild(col1);
+        row.appendChild(col2);
+        row.appendChild(col3);
+        row.appendChild(col4);
+
+        if (proposal.status === "closed" || proposal.status === "resolved") {
+            if (proposal.status === "resolved") row.classList.add("table-success");
+            if (proposal.status === "closed") row.classList.add("table-danger");
+            closedProposalsContent.appendChild(row);
+        } else {
+            const col5 = document.createElement("td");
+            const delete_button = document.createElement("button");
+            delete_button.classList.add(
+                "btn",
+                "btn-sm",
+                "btn-danger",
+                "rounded-circle"
+            );
+            delete_button.innerHTML = "<i class='fa fa-trash'></i>";
+
+            delete_button.addEventListener("click", async (e) => {
+                if (!confirm("Are you sure you want to close this proposal ?"))
+                    return;
+
+                fetch("/close-proposal", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(proposal),
+                }).then((response) => {
+                    location.reload();
+                });
+
+                location.reload();
+            });
+
+            col5.appendChild(delete_button);
+            row.appendChild(col5);
+            openProposalsContent.appendChild(row);
+        }
+    }
 });

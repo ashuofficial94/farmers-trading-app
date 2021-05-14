@@ -1,17 +1,18 @@
 body {
-  background: url('../images/background.jpg') no-repeat center fixed;
-  background-size: cover;
+    background: url("../images/background.jpg") no-repeat center fixed;
+    background-size: cover;
+    font-family: Raleway;
 }
 
 button {
-  margin: 5px;
-  padding: 5px;
+    margin: 5px;
+    padding: 5px;
 }
 
 .card {
-  position: absolute;
-  top: 10%;
-  left: 35%;
+    position: absolute;
+    top: 10%;
+    left: 35%;
 }
 
 .form-actions {

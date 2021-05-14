@@ -6,6 +6,7 @@
 }
 body {
     background: url("../images/background-blur.jpg") no-repeat center fixed;
+    font-family: Raleway;
 }
 .body-content {
     background: rgba(255, 255, 255, 0.7);

@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FarmerProposal = void 0;
 const database_1 = require("../utils/database");
+const ObjectID = require('mongodb').ObjectID;
 class FarmerProposal {
     constructor(userId, crop, basePrice, state, city) {
         this.userId = userId;
@@ -80,6 +81,19 @@ class FarmerProposal {
             .toArray()
             .then((proposals) => {
             return proposals;
+        })
+            .catch((err) => {
+            console.log(err);
+            throw err;
+        });
+    }
+    static closeProposal(proposalId) {
+        const db = database_1.getDb();
+        return db
+            .collection("farmer-proposals")
+            .updateOne({ "_id": ObjectID(proposalId) }, { $set: { status: "closed" } })
+            .then((result) => {
+            return result;
         })
             .catch((err) => {
             console.log(err);
