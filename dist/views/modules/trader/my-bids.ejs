@@ -1,0 +1,64 @@
+<section id="tabs" class="project-tab">
+    <div class="row">
+        <div class="col-md-12">
+            <nav>
+                <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                    <a class="nav-item nav-link active" id="nav-open-tab" data-toggle="tab" href="#open-tab" role="tab" aria-controls="nav-open" aria-selected="true">
+                        Open
+                    </a>
+                    <a class="nav-item nav-link" id="nav-pending-tab" data-toggle="tab" href="#pending-tab" role="tab" aria-controls="nav-pending" aria-selected="false">
+                        Pending
+                    </a>
+                    <a class="nav-item nav-link" id="nav-resolved-tab" data-toggle="tab" href="#resolved-tab" role="tab" aria-controls="nav-resolved" aria-selected="false">
+                        Accepted/Rejected
+                    </a>
+                </div>
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" role="tabpanel" aria-labelledby="nav-open-tab" id="open-tab">
+                    <table class="table table-hover rounded" style="background: white">
+                        <thead>
+                            <tr>
+                                <th>Crop</th>
+                                <th>Producer</th>
+                                <th>Base Price</th>
+                                <th>Status</th>
+                                <th>Bid Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody id="open-proposals"></tbody>
+                    </table>
+                </div>
+                <div class="tab-pane fade" id="pending-tab" role="tabpanel" aria-labelledby="nav-pending-tab">
+                    <table class="table table-hover rounded" style="background: white">
+                        <thead>
+                            <tr>
+                                <th>Crop</th>
+                                <th>Producer</th>
+                                <th>Base Price</th>
+                                <th>Status</th>
+                                <th>Bid Amount</th>
+                                <th>Operation</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pending-proposals"></tbody>
+                    </table>
+                </div>
+                <div class="tab-pane fade" id="resolved-tab" role="tabpanel" aria-labelledby="nav-resolved-tab">
+                    <table class="table table-hover rounded" style="background: white">
+                        <thead>
+                            <tr>
+                                <th>Crop</th>
+                                <th>Producer</th>
+                                <th>Base Price</th>
+                                <th>Status</th>
+                                <th>Bid Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resolved-proposals"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

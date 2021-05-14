@@ -87,3 +87,10 @@ exports.acceptBid = (req, res, next) => {
     trader_bid_1.TraderBid.acceptBid(data.bid, data.proposal);
     res.send({});
 };
+exports.getTraderBidsPage = (req, res, next) => {
+    res.render("dashboard", {
+        pageTitle: "Dashboard",
+        tabTitle: "trader-bids",
+        user: req.session.user,
+    });
+};

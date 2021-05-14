@@ -81,7 +81,11 @@ exports.addFarmerProposal = (
     res.redirect("/my-proposals");
 };
 
-exports.closeProposal = async (req: Request, res: Response, next: NextFunction) => {
+exports.closeProposal = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
     const response = await FarmerProposal.closeProposal(req.body._id);
     return response;
 };
@@ -90,20 +94,36 @@ exports.placeBid = (req: Request, res: Response, next: NextFunction) => {
     const proposalId = req.body.proposalId;
     const bidderId = req.session.user.userName;
     const bidAmount = parseInt(req.body.bidAmount.substring(1));
-    
+
     const bid = new TraderBid(proposalId, bidderId, bidAmount);
-    bid.save()
+    bid.save();
     res.redirect("/dashboard");
 };
 
-exports.getProposalBid = async (req: Request, res: Response, next: NextFunction) => {
+exports.getProposalBid = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
     const proposalId = req.body;
     const bids = await TraderBid.getBidByProposal(proposalId);
     res.send(bids);
-}
+};
 
 exports.acceptBid = (req: Request, res: Response, next: NextFunction) => {
     const data = JSON.parse(req.body);
     TraderBid.acceptBid(data.bid, data.proposal);
     res.send({});
-}
+};
+
+exports.getTraderBidsPage = (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    res.render("dashboard", {
+        pageTitle: "Dashboard",
+        tabTitle: "trader-bids",
+        user: req.session.user,
+    });
+};
