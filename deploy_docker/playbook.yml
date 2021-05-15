@@ -1,5 +1,5 @@
 ---
-- name: Pull docker image of Farmer Trading 
+- name: Pull docker image of Farmer Trading app
   hosts: all
   tasks:
     - name: Pull Farmer Trading devops image
