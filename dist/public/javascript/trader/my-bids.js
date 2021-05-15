@@ -18,6 +18,8 @@ async function getBids(user) {
             return bids;
         });
 
+    console.log(bids);
+
     for (let bid of bids) {
         const data = { proposalId: bid.proposalId };
         const proposal = await fetch("/get-proposal-id", {
