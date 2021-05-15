@@ -1,0 +1,8 @@
+---
+- name: Pull docker image of Farmer Trading 
+  hosts: all
+  tasks:
+    - name: Pull Farmer Trading devops image
+      docker_image:
+        name: bajpaiashu2111/farmers-trading-app-docker
+        source: pullk
