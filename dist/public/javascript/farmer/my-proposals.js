@@ -207,9 +207,11 @@ getProposals().then((proposals) => {
                 );
                 accepted_bid.innerHTML = "Accepted Bid";
 
-                accepted_bid("click", async (e) => {
+                accepted_bid.addEventListener("click", async (e) => {
                     getAcceptedBidInfo(proposal._id);
                 });
+                accepted_bid.setAttribute("data-toggle", "modal");
+                accepted_bid.setAttribute("data-target", "#accepted-bid");
 
                 col4.appendChild(accepted_bid);
                 row.classList.add("table-success");
@@ -288,16 +290,16 @@ async function getAcceptedBidInfo(proposalId) {
             return accepted_bid;
         });
 
-    const acceptedBidModal = document.querySelector(
-        "#accepted-bid-modal-body"
-    );
+    const acceptedBidModal = document.querySelector("#accepted-bid-modal-body");
 
     acceptedBidModal.style.textAlign = "center";
 
     acceptedBidModal.innerHTML =
         "<h5><strong>Bidder ID: </strong>" +
         acceptedBid.bidderId +
-        "</h5><br/><h5><strong>Bid Amount: ₹</strong>" + acceptedBid.bidAmount + "</h5>";
+        "</h5><br/><h5><strong>Bid Amount: ₹</strong>" +
+        acceptedBid.bidAmount +
+        "</h5>";
 }
 
 async function getBids(proposal) {

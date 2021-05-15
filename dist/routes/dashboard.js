@@ -18,3 +18,4 @@ router.post("/add-farmer-proposal", dashboardController.addFarmerProposal);
 router.post("/close-proposal", dashboardController.closeProposal);
 router.post("/place-bid", dashboardController.placeBid);
 router.post("/accept-bid", dashboardController.acceptBid);
+router.post("/confirm-bid", dashboardController.confirmBid);

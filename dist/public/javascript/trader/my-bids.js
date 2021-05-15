@@ -60,6 +60,11 @@ async function getBids(user) {
             button.classList.add("btn", "btn-success", "btn-sm", "rounded-pill");
             button.innerText = "Complete Bid";
 
+            button.addEventListener("click", async(e) => {
+                const avail = confirm('Do you want to avail transport service for this bid?');
+                if(!avail) confirmBid(bid);
+            });
+
             col6.appendChild(button);
             row.appendChild(col6);
             row.classList.add("table-warning");
@@ -74,4 +79,16 @@ async function getBids(user) {
             openBidsContent.appendChild(row);
         }
     }
+}
+
+async function confirmBid(bid) {
+    fetch('/confirm-bid', {
+        method: 'POST',
+        header: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(bid)
+    }).then(location.reload());
+
+    location.reload();
 }

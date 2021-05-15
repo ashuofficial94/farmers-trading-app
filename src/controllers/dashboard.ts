@@ -144,3 +144,9 @@ exports.getAcceptedBid = async(req: Request, res: Response, next: NextFunction) 
     const proposal = await FarmerProposal.getProposalById(data.proposalId);
     res.send(proposal.acceptedBid);
 }
+
+exports.confirmBid = async(req: Request, res: Response, next: NextFunction) => {
+    const data = JSON.parse(req.body);
+    TraderBid.confirmBid(data);
+    res.send({});
+}

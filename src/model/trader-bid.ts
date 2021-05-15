@@ -1,5 +1,4 @@
 import { getDb } from "../utils/database";
-import { FarmerProposal } from "./farmer-proposal";
 
 const ObjectID = require("mongodb").ObjectID;
 
@@ -90,12 +89,44 @@ class TraderBid {
         };
 
         db.collection("farmer-proposals")
-            .update(
+            .updateOne(
                 { _id: ObjectID(proposal._id) },
                 { $set: { acceptedBid: acceptedBid, status: "pending" } }
             )
-            .then((result: any) => {return result;})
-            .catch((err: Error) => {throw err;});
+            .then((result: any) => {
+                return result;
+            })
+            .catch((err: Error) => {
+                throw err;
+            });
+    }
+
+    static confirmBid(bid: any) {
+        const db = getDb();
+
+        db.collection("trader-bids")
+            .updateOne(
+                { _id: ObjectID(bid._id) },
+                { $set: { status: "accepted" } }
+            )
+            .then((result: any) => {
+                return result;
+            })
+            .catch((err: Error) => {
+                throw err;
+            });
+
+        db.collection("farmer-proposals")
+            .updateOne(
+                { _id: ObjectID(bid.proposalId) },
+                { $set: { status: "resolved" } }
+            )
+            .then((result: any) => {
+                return result;
+            })
+            .catch((err: Error) => {
+                throw err;
+            });
     }
 }
 

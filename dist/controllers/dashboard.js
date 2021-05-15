@@ -108,3 +108,8 @@ exports.getAcceptedBid = (req, res, next) => __awaiter(void 0, void 0, void 0, f
     const proposal = yield farmer_proposal_1.FarmerProposal.getProposalById(data.proposalId);
     res.send(proposal.acceptedBid);
 });
+exports.confirmBid = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const data = JSON.parse(req.body);
+    trader_bid_1.TraderBid.confirmBid(data);
+    res.send({});
+});

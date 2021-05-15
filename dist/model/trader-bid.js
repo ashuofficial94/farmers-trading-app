@@ -71,9 +71,32 @@ class TraderBid {
             bidAmount: bid.bidAmount,
         };
         db.collection("farmer-proposals")
-            .update({ _id: ObjectID(proposal._id) }, { $set: { acceptedBid: acceptedBid, status: "pending" } })
-            .then((result) => { return result; })
-            .catch((err) => { throw err; });
+            .updateOne({ _id: ObjectID(proposal._id) }, { $set: { acceptedBid: acceptedBid, status: "pending" } })
+            .then((result) => {
+            return result;
+        })
+            .catch((err) => {
+            throw err;
+        });
+    }
+    static confirmBid(bid) {
+        const db = database_1.getDb();
+        db.collection("trader-bids")
+            .updateOne({ _id: ObjectID(bid._id) }, { $set: { status: "accepted" } })
+            .then((result) => {
+            return result;
+        })
+            .catch((err) => {
+            throw err;
+        });
+        db.collection("farmer-proposals")
+            .updateOne({ _id: ObjectID(bid.proposalId) }, { $set: { status: "resolved" } })
+            .then((result) => {
+            return result;
+        })
+            .catch((err) => {
+            throw err;
+        });
     }
 }
 exports.TraderBid = TraderBid;
