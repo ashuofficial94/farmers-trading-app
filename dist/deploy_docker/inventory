@@ -1,2 +1,1 @@
-[webservers]
-localhost
+localhost ansible_user = ashutosh-HP-Laptop-15-bs0xx
