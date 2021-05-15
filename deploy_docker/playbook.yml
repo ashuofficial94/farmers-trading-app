@@ -5,4 +5,4 @@
     - name: Pull Farmer Trading devops image
       docker_image:
         name: bajpaiashu2111/farmers-trading-app-docker
-        source: pullk
+        source: pull
