@@ -206,6 +206,11 @@ getProposals().then((proposals) => {
                     "rounded-pill"
                 );
                 accepted_bid.innerHTML = "Accepted Bid";
+
+                accepted_bid("click", async (e) => {
+                    getAcceptedBidInfo(proposal._id);
+                });
+
                 col4.appendChild(accepted_bid);
                 row.classList.add("table-success");
             } else if (proposal.status === "closed") {
@@ -254,6 +259,13 @@ getProposals().then((proposals) => {
                 "rounded-pill"
             );
             accepted_bid.innerHTML = "Accepted Bid";
+            accepted_bid.setAttribute("data-toggle", "modal");
+            accepted_bid.setAttribute("data-target", "#accepted-bid");
+
+            accepted_bid.addEventListener("click", async (e) => {
+                getAcceptedBidInfo(proposal._id);
+            });
+
             col4.appendChild(accepted_bid);
             row.classList.add("table-warning");
             pendingProposalsContent.appendChild(row);
@@ -261,8 +273,35 @@ getProposals().then((proposals) => {
     }
 });
 
+async function getAcceptedBidInfo(proposalId) {
+    const acceptedBid = await fetch("/get-accepted-bid", {
+        method: "POST",
+        header: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ proposalId: proposalId }),
+    })
+        .then((response) => {
+            return response.json();
+        })
+        .then((accepted_bid) => {
+            return accepted_bid;
+        });
+
+    const acceptedBidModal = document.querySelector(
+        "#accepted-bid-modal-body"
+    );
+
+    acceptedBidModal.style.textAlign = "center";
+
+    acceptedBidModal.innerHTML =
+        "<h5><strong>Bidder ID: </strong>" +
+        acceptedBid.bidderId +
+        "</h5><br/><h5><strong>Bid Amount: ₹</strong>" + acceptedBid.bidAmount + "</h5>";
+}
+
 async function getBids(proposal) {
-    bidsContent = document.querySelector("#show-bids-modal-body");
+    const bidsContent = document.querySelector("#show-bids-modal-body");
     bidsContent.innerHTML = "";
 
     const bids = await fetch("/get-proposal-bid", {

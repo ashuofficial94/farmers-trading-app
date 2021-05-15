@@ -11,6 +11,8 @@ router.get("/get-proposals", dashboardController.getProposals);
 router.get("/my-proposals", dashboardController.getFarmerProposalsPage);
 router.get("/my-bids", dashboardController.getTraderBidsPage);
 router.get("/get-bidder-bid", dashboardController.getBidderBid);
+router.post("/get-accepted-bid", dashboardController.getAcceptedBid);
+router.post("/get-proposal-id", dashboardController.getProposalById);
 router.post("/get-proposal-bid", dashboardController.getProposalBid);
 router.post("/add-farmer-proposal", dashboardController.addFarmerProposal);
 router.post("/close-proposal", dashboardController.closeProposal);

@@ -79,7 +79,6 @@ exports.placeBid = (req, res, next) => {
 };
 exports.getBidderBid = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const bids = yield trader_bid_1.TraderBid.getBidByBidder(req.session.user.userName);
-    console.log(bids);
     res.send(bids);
 });
 exports.getProposalBid = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -99,3 +98,13 @@ exports.getTraderBidsPage = (req, res, next) => {
         user: req.session.user,
     });
 };
+exports.getProposalById = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const data = JSON.parse(req.body);
+    const proposal = yield farmer_proposal_1.FarmerProposal.getProposalById(data.proposalId);
+    res.send(proposal);
+});
+exports.getAcceptedBid = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const data = JSON.parse(req.body);
+    const proposal = yield farmer_proposal_1.FarmerProposal.getProposalById(data.proposalId);
+    res.send(proposal.acceptedBid);
+});

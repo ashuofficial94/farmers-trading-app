@@ -7,13 +7,13 @@ class TraderBid {
     proposalId: string;
     bidderId: string;
     bidAmount: number;
-    bidStatus: "open" | "pending" | "accepted" | "rejected";
+    status: "open" | "pending" | "accepted" | "rejected";
 
     constructor(proposalId: string, bidderId: string, bidAmount: number) {
         this.proposalId = proposalId;
         this.bidderId = bidderId;
         this.bidAmount = bidAmount;
-        this.bidStatus = "open";
+        this.status = "open";
     }
 
     save() {
@@ -39,7 +39,6 @@ class TraderBid {
                 return bids;
             })
             .catch((err: Error) => {
-                console.log(err);
                 throw err;
             });
     }
@@ -66,13 +65,24 @@ class TraderBid {
                 { proposalId: proposal._id },
                 { $set: { status: "rejected" } }
             )
-            .then((result: any) => console.log(result))
-            .catch((err: Error) => console.log(err));
+            .then((result: any) => {
+                return result;
+            })
+            .catch((err: Error) => {
+                throw err;
+            });
 
         db.collection("trader-bids")
-            .updateOne({ _id: ObjectID(bid._id) }, { $set: { status: "pending" } })
-            .then((result: any) => console.log(result))
-            .catch((err: Error) => console.log(err));
+            .updateOne(
+                { _id: ObjectID(bid._id) },
+                { $set: { status: "pending" } }
+            )
+            .then((result: any) => {
+                return result;
+            })
+            .catch((err: Error) => {
+                throw err;
+            });
 
         const acceptedBid = {
             bidderId: bid.bidderId,
@@ -84,8 +94,8 @@ class TraderBid {
                 { _id: ObjectID(proposal._id) },
                 { $set: { acceptedBid: acceptedBid, status: "pending" } }
             )
-            .then((result: any) => console.log(result))
-            .catch((err: Error) => console.log(err));
+            .then((result: any) => {return result;})
+            .catch((err: Error) => {throw err;});
     }
 }
 

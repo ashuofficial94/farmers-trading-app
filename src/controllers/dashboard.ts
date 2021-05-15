@@ -102,7 +102,6 @@ exports.placeBid = (req: Request, res: Response, next: NextFunction) => {
 
 exports.getBidderBid = async (req: Request, res: Response, next: NextFunction) => {
     const bids = await TraderBid.getBidByBidder(req.session.user.userName);
-    console.log(bids);
     res.send(bids);
 }
 
@@ -133,3 +132,15 @@ exports.getTraderBidsPage = (
         user: req.session.user,
     });
 };
+
+exports.getProposalById = async (req: Request, res: Response, next: NextFunction) => {
+    const data = JSON.parse(req.body);
+    const proposal = await FarmerProposal.getProposalById(data.proposalId);
+    res.send(proposal);
+}
+
+exports.getAcceptedBid = async(req: Request, res: Response, next: NextFunction) => {
+    const data = JSON.parse(req.body);
+    const proposal = await FarmerProposal.getProposalById(data.proposalId);
+    res.send(proposal.acceptedBid);
+}

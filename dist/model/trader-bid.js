@@ -8,7 +8,7 @@ class TraderBid {
         this.proposalId = proposalId;
         this.bidderId = bidderId;
         this.bidAmount = bidAmount;
-        this.bidStatus = "open";
+        this.status = "open";
     }
     save() {
         const db = database_1.getDb();
@@ -32,7 +32,6 @@ class TraderBid {
             return bids;
         })
             .catch((err) => {
-            console.log(err);
             throw err;
         });
     }
@@ -53,20 +52,28 @@ class TraderBid {
         const db = database_1.getDb();
         db.collection("trader-bids")
             .updateMany({ proposalId: proposal._id }, { $set: { status: "rejected" } })
-            .then((result) => console.log(result))
-            .catch((err) => console.log(err));
+            .then((result) => {
+            return result;
+        })
+            .catch((err) => {
+            throw err;
+        });
         db.collection("trader-bids")
             .updateOne({ _id: ObjectID(bid._id) }, { $set: { status: "pending" } })
-            .then((result) => console.log(result))
-            .catch((err) => console.log(err));
+            .then((result) => {
+            return result;
+        })
+            .catch((err) => {
+            throw err;
+        });
         const acceptedBid = {
             bidderId: bid.bidderId,
             bidAmount: bid.bidAmount,
         };
         db.collection("farmer-proposals")
             .update({ _id: ObjectID(proposal._id) }, { $set: { acceptedBid: acceptedBid, status: "pending" } })
-            .then((result) => console.log(result))
-            .catch((err) => console.log(err));
+            .then((result) => { return result; })
+            .catch((err) => { throw err; });
     }
 }
 exports.TraderBid = TraderBid;

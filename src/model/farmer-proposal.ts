@@ -1,5 +1,5 @@
 import { getDb } from "../utils/database";
-const ObjectID = require('mongodb').ObjectID
+const ObjectID = require("mongodb").ObjectID;
 
 class FarmerProposal {
     userId: string;
@@ -33,10 +33,10 @@ class FarmerProposal {
         db.collection("farmer-proposals")
             .insertOne(this)
             .then((result: any) => {
-                console.log(result);
+                return result;
             })
             .catch((err: Error) => {
-                console.log(err);
+                throw err;
             });
     }
 
@@ -50,7 +50,19 @@ class FarmerProposal {
                 return proposals;
             })
             .catch((err: Error) => {
-                console.log(err);
+                throw err;
+            });
+    }
+
+    static getProposalById(proposalId: string) {
+        const db = getDb();
+        return db
+            .collection("farmer-proposals")
+            .findOne({ _id: ObjectID(proposalId) })
+            .then((result: FarmerProposal) => {
+                return result;
+            })
+            .catch((err: Error) => {
                 throw err;
             });
     }
@@ -65,24 +77,22 @@ class FarmerProposal {
                 return proposals;
             })
             .catch((err: Error) => {
-                console.log(err);
                 throw err;
             });
     }
-   
+
     static closeProposal(proposalId: string) {
         const db = getDb();
         return db
             .collection("farmer-proposals")
             .updateOne(
-                { "_id": ObjectID(proposalId) },
+                { _id: ObjectID(proposalId) },
                 { $set: { status: "closed" } }
             )
             .then((result: any) => {
                 return result;
             })
             .catch((err: Error) => {
-                console.log(err);
                 throw err;
             });
     }

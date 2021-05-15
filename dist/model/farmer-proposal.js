@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FarmerProposal = void 0;
 const database_1 = require("../utils/database");
-const ObjectID = require('mongodb').ObjectID;
+const ObjectID = require("mongodb").ObjectID;
 class FarmerProposal {
     constructor(userId, crop, basePrice, state, city) {
         this.userId = userId;
@@ -12,17 +12,17 @@ class FarmerProposal {
         this.city = city;
         this.startDate = new Date();
         this.status = "open";
-        this.bids = [];
+        this.acceptedBid = {};
     }
     save() {
         const db = database_1.getDb();
         db.collection("farmer-proposals")
             .insertOne(this)
             .then((result) => {
-            console.log(result);
+            return result;
         })
             .catch((err) => {
-            console.log(err);
+            throw err;
         });
     }
     static fetchAll() {
@@ -35,7 +35,18 @@ class FarmerProposal {
             return proposals;
         })
             .catch((err) => {
-            console.log(err);
+            throw err;
+        });
+    }
+    static getProposalById(proposalId) {
+        const db = database_1.getDb();
+        return db
+            .collection("farmer-proposals")
+            .findOne({ _id: ObjectID(proposalId) })
+            .then((result) => {
+            return result;
+        })
+            .catch((err) => {
             throw err;
         });
     }
@@ -49,41 +60,6 @@ class FarmerProposal {
             return proposals;
         })
             .catch((err) => {
-            console.log(err);
-            throw err;
-        });
-    }
-    static addBid(userId, bidderId, bidAmount) {
-        const db = database_1.getDb();
-        db.collection("farmer-proposals")
-            .updateOne({ userId: userId }, {
-            $push: {
-                bids: {
-                    bidderId: bidderId,
-                    bidAmount: bidAmount,
-                },
-                $sort: { bidAmount: -1 },
-            },
-        })
-            .then((result) => {
-            console.log(result);
-        })
-            .catch((err) => {
-            console.log(err);
-            throw err;
-        });
-    }
-    static getBids(bidderId) {
-        const db = database_1.getDb();
-        return db
-            .collection("farmer-proposals")
-            .find({ bidderId: bidderId })
-            .toArray()
-            .then((proposals) => {
-            return proposals;
-        })
-            .catch((err) => {
-            console.log(err);
             throw err;
         });
     }
@@ -91,12 +67,11 @@ class FarmerProposal {
         const db = database_1.getDb();
         return db
             .collection("farmer-proposals")
-            .updateOne({ "_id": ObjectID(proposalId) }, { $set: { status: "closed" } })
+            .updateOne({ _id: ObjectID(proposalId) }, { $set: { status: "closed" } })
             .then((result) => {
             return result;
         })
             .catch((err) => {
-            console.log(err);
             throw err;
         });
     }
