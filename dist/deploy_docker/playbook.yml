@@ -1,6 +1,6 @@
 ---
 - name: Pull docker image of Farmer Trading app
-  hosts: localhost 
+  hosts: all 
   tasks:
     - name: Pull Farmer Trading devops image
       docker_image:
